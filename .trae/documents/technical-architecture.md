@@ -2,7 +2,7 @@
 
 ```mermaid
 flowchart TD
-    "前端 React 应用" --> "路由层 (React Router)"
+    "前端 Vue 应用" --> "路由层 (Vue Router)"
     "路由层" --> "首页"
     "路由层" --> "教程页面"
     "路由层" --> "速查表页面"
@@ -16,12 +16,12 @@ flowchart TD
 
 ## 2. 技术说明
 
-- 前端：React@18 + TypeScript + Tailwind CSS@3 + Vite
+- 前端：Vue@3 + TypeScript + Tailwind CSS@3 + Vite
 - 初始化工具：vite-init
 - 后端：无
 - 数据库：无，使用静态 JSON 数据
 - 代码高亮：Prism.js / highlight.js
-- 状态管理：Zustand
+- 状态管理：Vue 响应式 (composables)
 
 ## 3. 路由定义
 
