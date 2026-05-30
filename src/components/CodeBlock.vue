@@ -30,14 +30,14 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="relative border border-dev-border bg-dev-bg">
-    <div class="flex items-center justify-between px-3 py-1 border-b border-dev-border bg-dev-surface">
-      <span class="text-[11px] font-mono text-dev-text-muted">{{ language || 'typescript' }}</span>
+  <div class="relative border border-cosmos-border bg-cosmos-deep">
+    <div class="flex items-center justify-between px-3 py-1 border-b border-cosmos-border bg-cosmos-surface">
+      <span class="text-[11px] font-mono text-cosmos-muted">{{ language || 'typescript' }}</span>
       <button
-        class="flex items-center gap-1 text-[11px] text-dev-text-muted hover:text-dev-text transition-colors"
+        class="flex items-center gap-1 text-[11px] text-cosmos-muted hover:text-cosmos-text transition-colors"
         @click="copyCode"
       >
-        <Check v-if="copied" :size="11" class="text-dev-green" />
+        <Check v-if="copied" :size="11" class="text-cosmos-green" />
         <Copy v-else :size="11" />
         {{ copied ? '已复制' : '复制' }}
       </button>

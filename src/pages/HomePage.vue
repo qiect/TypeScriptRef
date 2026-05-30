@@ -1,62 +1,71 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { tutorialChapters } from '@/data/tutorialData'
-import { cheatSheetCategories } from '@/data/cheatsheetData'
-import { ArrowRight, BookOpen, Zap, Search } from 'lucide-vue-next'
+import ConstellationMap from '@/components/ConstellationMap.vue'
+import { Search, BookOpen, Zap, X } from 'lucide-vue-next'
 
 const router = useRouter()
+
+const handleNavigate = (path: string) => {
+  router.push(path)
+}
 </script>
 
 <template>
-  <div class="max-w-3xl mx-auto px-6 py-10">
-    <div class="mb-10">
-      <h1 class="text-2xl font-bold text-dev-text mb-2">TypeScript 教程与速查</h1>
-      <p class="text-sm text-dev-text-secondary">
-        从左侧导航选择教程章节或速查分类，或使用 <kbd class="text-[11px] font-mono bg-dev-surface px-1.5 py-0.5 rounded border border-dev-border">⌘K</kbd> 快速搜索
-      </p>
-    </div>
-
-    <div class="mb-8">
-      <h2 class="text-xs font-semibold text-dev-text-muted uppercase tracking-wider mb-3 flex items-center gap-2">
-        <BookOpen :size="13" />
-        教程
-      </h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-1">
-        <button
-          v-for="(chapter, index) in tutorialChapters"
-          :key="chapter.slug"
-          class="group text-left px-3 py-2.5 rounded hover:bg-dev-overlay transition-colors flex items-center gap-3"
-          @click="router.push(`/tutorial/${chapter.slug}`)"
-        >
-          <span class="font-mono text-xs text-dev-text-muted w-5 shrink-0">{{ String(index + 1).padStart(2, '0') }}</span>
-          <div class="min-w-0">
-            <p class="text-sm text-dev-text group-hover:text-dev-accent-bright transition-colors">{{ chapter.title }}</p>
-            <p class="text-xs text-dev-text-muted truncate">{{ chapter.description }}</p>
-          </div>
-        </button>
+  <div class="relative w-full h-full flex flex-col">
+    <header class="h-12 flex items-center justify-between px-5 border-b border-cosmos-border bg-cosmos-deep/80 backdrop-blur-sm shrink-0 z-10">
+      <div class="flex items-center gap-3">
+        <div class="w-6 h-6 bg-cosmos-accent rounded flex items-center justify-center text-[10px] font-mono font-bold text-white">TS</div>
+        <span class="text-sm font-semibold text-cosmos-text tracking-wide">Constellation</span>
+        <span class="text-xs text-cosmos-muted font-mono hidden sm:inline">TypeScript 知识星图</span>
       </div>
-    </div>
-
-    <div>
-      <h2 class="text-xs font-semibold text-dev-text-muted uppercase tracking-wider mb-3 flex items-center gap-2">
-        <Zap :size="13" />
-        速查表
-      </h2>
-      <div class="flex flex-wrap gap-1.5">
+      <div class="flex items-center gap-3">
         <button
-          class="px-3 py-1.5 text-xs text-dev-text-secondary border border-dev-border rounded hover:border-dev-accent hover:text-dev-accent-bright transition-colors"
+          class="flex items-center gap-1.5 text-xs text-cosmos-dim hover:text-cosmos-text transition-colors"
+          @click="router.push('/tutorial/getting-started')"
+        >
+          <BookOpen :size="13" />
+          <span class="hidden sm:inline">教程</span>
+        </button>
+        <button
+          class="flex items-center gap-1.5 text-xs text-cosmos-dim hover:text-cosmos-text transition-colors"
           @click="router.push('/cheatsheet')"
         >
-          全部
+          <Zap :size="13" />
+          <span class="hidden sm:inline">速查表</span>
         </button>
-        <button
-          v-for="category in cheatSheetCategories"
-          :key="category"
-          class="px-3 py-1.5 text-xs text-dev-text-secondary border border-dev-border rounded hover:border-dev-accent hover:text-dev-accent-bright transition-colors"
-          @click="router.push(`/cheatsheet/${category}`)"
-        >
-          {{ category }}
-        </button>
+      </div>
+    </header>
+
+    <div class="flex-1 relative overflow-hidden">
+      <ConstellationMap @navigate="handleNavigate" />
+
+      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-center pointer-events-none">
+        <p class="text-xs text-cosmos-muted">
+          点击星图中的节点探索 TypeScript 知识体系
+        </p>
+      </div>
+
+      <div class="absolute top-4 right-4 flex flex-col gap-2 pointer-events-none">
+        <div class="flex items-center gap-2 text-[10px] text-cosmos-muted">
+          <span class="w-2 h-2 rounded-full bg-cosmos-cyan"></span>
+          教程章节
+        </div>
+        <div class="flex items-center gap-2 text-[10px] text-cosmos-muted">
+          <span class="w-2 h-2 rounded-full bg-cosmos-gold"></span>
+          泛型
+        </div>
+        <div class="flex items-center gap-2 text-[10px] text-cosmos-muted">
+          <span class="w-2 h-2 rounded-full bg-cosmos-rose"></span>
+          高级类型
+        </div>
+        <div class="flex items-center gap-2 text-[10px] text-cosmos-muted">
+          <span class="w-2 h-2 rounded-full bg-cosmos-green"></span>
+          模块
+        </div>
+        <div class="flex items-center gap-2 text-[10px] text-cosmos-muted">
+          <span class="w-1.5 h-1.5 rounded-full bg-cosmos-orange"></span>
+          速查条目
+        </div>
       </div>
     </div>
   </div>
