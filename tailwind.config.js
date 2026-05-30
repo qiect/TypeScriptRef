@@ -9,47 +9,26 @@ export default {
     },
     extend: {
       colors: {
-        paper: {
-          50: "#fdfcf9",
-          100: "#f8f6f1",
-          200: "#f0ece3",
-          300: "#e4dfd4",
-        },
-        ink: {
-          DEFAULT: "#1a1a1a",
-          light: "#3d3d3d",
-          muted: "#6b6b6b",
-          faint: "#999999",
-        },
-        vermillion: {
-          DEFAULT: "#e63946",
-          dark: "#c1121f",
-          light: "#ff6b6b",
-        },
-        code: {
-          bg: "#1e1e1e",
-          border: "#333333",
-          text: "#d4d4d4",
+        dev: {
+          bg: "#0d1117",
+          surface: "#161b22",
+          overlay: "#1c2128",
+          border: "#30363d",
+          "border-light": "#3d444d",
+          text: "#e6edf3",
+          "text-secondary": "#8b949e",
+          "text-muted": "#656d76",
+          accent: "#3178c6",
+          "accent-bright": "#58a6ff",
+          green: "#3fb950",
+          orange: "#d29922",
+          red: "#f85149",
+          purple: "#bc8cff",
         },
       },
       fontFamily: {
-        serif: ['"Instrument Serif"', 'Georgia', 'serif'],
-        sans: ['"Source Sans 3"', 'system-ui', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'monospace'],
-      },
-      animation: {
-        "fade-in": "fadeIn 0.5s ease-out forwards",
-        "slide-up": "slideUp 0.5s ease-out forwards",
-      },
-      keyframes: {
-        fadeIn: {
-          "0%": { opacity: "0" },
-          "100%": { opacity: "1" },
-        },
-        slideUp: {
-          "0%": { opacity: "0", transform: "translateY(12px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
+        sans: ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
+        mono: ['"IBM Plex Mono"', 'monospace'],
       },
     },
   },
