@@ -12,11 +12,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html, body, #app {
+  height: 100%;
+}
+
 body {
   background-color: #06060f;
   color: #e8e8f0;
   font-size: 14px;
-  overflow: hidden;
 }
 
 ::selection {
