@@ -3,17 +3,12 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { tutorialChapters } from '@/data/tutorialData'
 import CodeBlock from '@/components/CodeBlock.vue'
-import { ChevronLeft, ChevronRight, Menu, X, Play, Hash, Layers, Braces, Building, GitBranch, Sparkles, Package } from 'lucide-vue-next'
+import { ChevronLeft, ChevronRight, Menu, X } from 'lucide-vue-next'
 
 const route = useRoute()
 const router = useRouter()
 
-const isSidebarOpen = ref(true)
 const isMobileSidebarOpen = ref(false)
-
-const iconMap: Record<string, any> = {
-  Play, Hash, Layers, Braces, Building, GitBranch, Sparkles, Package,
-}
 
 const currentSlug = computed(() => route.params.slug as string)
 
@@ -41,57 +36,36 @@ const navigateToChapter = (slug: string) => {
   router.push(`/tutorial/${slug}`)
   isMobileSidebarOpen.value = false
 }
-
-const handleResize = () => {
-  if (window.innerWidth < 1024) {
-    isSidebarOpen.value = false
-  }
-}
-
-onMounted(() => {
-  handleResize()
-  window.addEventListener('resize', handleResize)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('resize', handleResize)
-})
 </script>
 
 <template>
-  <div class="min-h-screen pt-16">
+  <div class="min-h-screen">
     <div v-if="currentChapter" class="flex">
-      <button
-        class="lg:hidden fixed bottom-4 left-4 z-40 p-3 bg-ts-blue rounded-full shadow-lg shadow-ts-blue/30"
-        @click="isMobileSidebarOpen = !isMobileSidebarOpen"
-      >
-        <Menu v-if="!isMobileSidebarOpen" :size="20" class="text-white" />
-        <X v-else :size="20" class="text-white" />
-      </button>
-
       <aside
         :class="[
-          'fixed lg:sticky top-16 left-0 z-30 h-[calc(100vh-4rem)] w-72 border-r border-ts-border bg-ts-navy/95 backdrop-blur-md overflow-y-auto transition-transform duration-300',
+          'fixed lg:sticky top-14 left-0 z-30 h-[calc(100vh-3.5rem)] w-64 border-r border-paper-300 bg-paper-100 overflow-y-auto transition-transform duration-200 shrink-0',
           isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
         ]"
       >
-        <div class="p-4">
-          <h3 class="text-xs font-semibold text-ts-muted uppercase tracking-wider mb-4 px-2">
-            教程目录
-          </h3>
-          <div class="space-y-1">
+        <div class="p-5">
+          <p class="font-mono text-xs tracking-widest uppercase text-vermillion mb-4">
+            目录
+          </p>
+          <div class="space-y-0.5">
             <button
-              v-for="chapter in tutorialChapters"
+              v-for="(chapter, index) in tutorialChapters"
               :key="chapter.slug"
               :class="[
-                'w-full text-left px-3 py-2.5 rounded-lg text-sm transition-all duration-200 flex items-center gap-3',
+                'w-full text-left px-3 py-2 text-sm transition-colors duration-150 flex items-center gap-3',
                 chapter.slug === currentSlug
-                  ? 'bg-ts-blue/15 text-ts-blue border border-ts-blue/30'
-                  : 'text-ts-muted hover:text-white hover:bg-ts-surface border border-transparent',
+                  ? 'text-vermillion font-semibold bg-paper-200'
+                  : 'text-ink-muted hover:text-ink hover:bg-paper-200',
               ]"
               @click="navigateToChapter(chapter.slug)"
             >
-              <component :is="iconMap[chapter.icon] || Play" :size="16" class="shrink-0" />
+              <span class="font-mono text-xs text-ink-faint w-5 shrink-0">
+                {{ String(index + 1).padStart(2, '0') }}
+              </span>
               <span class="truncate">{{ chapter.title }}</span>
             </button>
           </div>
@@ -100,67 +74,73 @@ onUnmounted(() => {
 
       <div
         v-if="isMobileSidebarOpen"
-        class="fixed inset-0 bg-black/50 z-20 lg:hidden"
+        class="fixed inset-0 bg-ink/20 z-20 lg:hidden"
         @click="isMobileSidebarOpen = false"
       />
 
-      <main class="flex-1 min-w-0 px-4 sm:px-8 lg:px-12 py-8 max-w-4xl mx-auto">
-        <div class="mb-8">
-          <div class="flex items-center gap-2 text-sm text-ts-muted mb-2">
-            <span class="font-mono">{{ String(currentChapterIndex + 1).padStart(2, '0') }}</span>
-            <span>/</span>
-            <span class="font-mono">{{ String(tutorialChapters.length).padStart(2, '0') }}</span>
-          </div>
-          <h1 class="text-3xl sm:text-4xl font-bold text-white mb-3">
+      <main class="flex-1 min-w-0 px-6 lg:px-12 py-10 max-w-3xl">
+        <button
+          class="lg:hidden mb-4 text-sm text-ink-muted hover:text-ink flex items-center gap-1"
+          @click="isMobileSidebarOpen = !isMobileSidebarOpen"
+        >
+          <Menu :size="14" />
+          目录
+        </button>
+
+        <div class="mb-10">
+          <p class="font-mono text-xs text-ink-faint mb-2">
+            {{ String(currentChapterIndex + 1).padStart(2, '0') }} / {{ String(tutorialChapters.length).padStart(2, '0') }}
+          </p>
+          <h1 class="font-serif text-3xl sm:text-4xl text-ink mb-3">
             {{ currentChapter.title }}
           </h1>
-          <p class="text-ts-muted text-lg">{{ currentChapter.description }}</p>
+          <p class="text-ink-muted">{{ currentChapter.description }}</p>
         </div>
 
-        <div class="space-y-10">
+        <div class="space-y-12">
           <div
             v-for="section in currentChapter.sections"
             :key="section.id"
             :id="section.id"
-            class="scroll-mt-24"
+            class="scroll-mt-20"
           >
-            <h2 class="text-xl sm:text-2xl font-semibold text-white mb-4">
+            <h2 class="font-serif text-xl sm:text-2xl text-ink mb-4 border-b border-paper-300 pb-2">
               {{ section.title }}
             </h2>
-            <p class="text-ts-muted leading-relaxed mb-4 whitespace-pre-line">
+            <p class="text-ink-light leading-relaxed mb-5 whitespace-pre-line">
               {{ section.content }}
             </p>
-            <div v-if="section.codeExample" class="mb-2">
-              <p class="text-sm text-ts-muted mb-2">{{ section.codeExample.description }}</p>
+            <div v-if="section.codeExample">
+              <p class="text-sm text-ink-muted mb-2">{{ section.codeExample.description }}</p>
               <CodeBlock :code="section.codeExample.code" :language="section.codeExample.language" />
             </div>
           </div>
         </div>
 
-        <div class="flex items-center justify-between mt-16 pt-8 border-t border-ts-border">
+        <div class="flex items-center justify-between mt-16 pt-6 border-t-2 border-ink">
           <button
             v-if="prevChapter"
-            class="flex items-center gap-2 text-ts-muted hover:text-white transition-colors group"
+            class="flex items-center gap-2 text-ink-muted hover:text-ink transition-colors group"
             @click="navigateToChapter(prevChapter.slug)"
           >
-            <ChevronLeft :size="18" class="group-hover:-translate-x-1 transition-transform" />
+            <ChevronLeft :size="16" class="group-hover:-translate-x-0.5 transition-transform" />
             <div class="text-left">
-              <div class="text-xs text-ts-muted">上一章</div>
-              <div class="text-sm font-medium">{{ prevChapter.title }}</div>
+              <p class="text-xs text-ink-faint">上一章</p>
+              <p class="text-sm font-medium">{{ prevChapter.title }}</p>
             </div>
           </button>
           <div v-else />
 
           <button
             v-if="nextChapter"
-            class="flex items-center gap-2 text-ts-muted hover:text-white transition-colors group"
+            class="flex items-center gap-2 text-ink-muted hover:text-ink transition-colors group"
             @click="navigateToChapter(nextChapter.slug)"
           >
             <div class="text-right">
-              <div class="text-xs text-ts-muted">下一章</div>
-              <div class="text-sm font-medium">{{ nextChapter.title }}</div>
+              <p class="text-xs text-ink-faint">下一章</p>
+              <p class="text-sm font-medium">{{ nextChapter.title }}</p>
             </div>
-            <ChevronRight :size="18" class="group-hover:translate-x-1 transition-transform" />
+            <ChevronRight :size="16" class="group-hover:translate-x-0.5 transition-transform" />
           </button>
           <div v-else />
         </div>
@@ -169,10 +149,10 @@ onUnmounted(() => {
 
     <div v-else class="flex items-center justify-center min-h-[60vh]">
       <div class="text-center">
-        <h2 class="text-2xl font-bold text-white mb-4">章节未找到</h2>
-        <p class="text-ts-muted mb-6">请从教程目录中选择一个章节</p>
+        <h2 class="font-serif text-2xl text-ink mb-3">章节未找到</h2>
+        <p class="text-ink-muted mb-6">请从教程目录中选择一个章节</p>
         <button
-          class="px-6 py-2.5 bg-ts-blue hover:bg-blue-600 text-white rounded-lg transition-colors"
+          class="px-5 py-2 bg-ink text-paper-100 text-sm hover:bg-vermillion transition-colors"
           @click="router.push('/tutorial/getting-started')"
         >
           从第一章开始
